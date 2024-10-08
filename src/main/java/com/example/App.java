@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.OptionalDouble;
-import java.util.function.Predicate;
-import java.util.function.ToDoubleFunction;
 
 /**
  * Hello world!
@@ -394,28 +392,23 @@ public class App {
          */
 
          OptionalDouble optionalDeSalario = elementosVarios.stream()
-         .filter(new Predicate<Object>() {
-
-                @Override
-                public boolean test(Object obj) {
-                        return obj instanceof  Empleado empleado && 
-                                 empleado.getGenero().equals(Genero.MUJER);
-                }
+         .filter(o -> o instanceof  Empleado empleado && 
+                                 empleado.getGenero().equals(Genero.MUJER)
                 
-         }).mapToDouble(new ToDoubleFunction<Object>() {
-
-                @Override
-                public double applyAsDouble(Object obj) {
-                        Empleado empleado = (Empleado) obj;  
-                        return empleado.getSalario();
-                }
                 
-         }).average();
+         ).mapToDouble(obj -> { Empleado empleado = (Empleado) obj;  
+                                return empleado.getSalario();
+                              }
+                
+         ).average();
  
         double salarioPromedio;
  
         if (optionalDeSalario.isPresent()) 
                 salarioPromedio = optionalDeSalario.getAsDouble();
+
+        /* Sintaxis de las expresiones lambda: 
+        https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html#syntax */        
 
 
     }
